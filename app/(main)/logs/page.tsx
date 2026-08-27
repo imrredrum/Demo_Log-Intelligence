@@ -1,5 +1,6 @@
 import Filter from '@/components/Filter'
-import LogsList from '@/components/LogsList'
+import { LogDrawer, LogsList } from '@/components/Logs'
+import {} from '@/components/Logs'
 import { Box, Container, Typography } from '@mui/material'
 
 const LogsPage: React.FC = () => (
@@ -14,6 +15,7 @@ const LogsPage: React.FC = () => (
 
     <Box component='section' sx={{ mt: 1, pb: 2, maxWidth: 'md' }}>
       <LogsList />
+      <LogDrawer />
     </Box>
   </Container>
 )

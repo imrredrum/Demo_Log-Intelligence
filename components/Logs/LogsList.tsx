@@ -1,7 +1,8 @@
 'use client'
 
 import useFilterStore from '@/domain/filter/store'
-import { ELogLevel, LogEntry } from '@/domain/log/schema'
+import type { LogEntry } from '@/domain/log/schema'
+import { setDetail } from './store'
 import { useLogsStore } from '@/domain/log/store'
 import useSourceSystemStore from '@/domain/sourceSystem/store'
 import {
@@ -17,18 +18,7 @@ import {
 } from '@mui/material'
 import dayjs from 'dayjs'
 import { useState } from 'react'
-
-const resolveColor = (level: LogEntry['level']) => {
-  switch (level) {
-    case ELogLevel.ERROR:
-      return 'error'
-    case ELogLevel.WARN:
-      return 'warning'
-    case ELogLevel.INFO:
-    case ELogLevel.DEBUG:
-      return 'default'
-  }
-}
+import { resolveColor } from './utils'
 
 const SIZE_OPTIONS = [10, 25, 100] as const
 
@@ -74,6 +64,10 @@ const LogsList = () => {
 
   const displayLogs = logs.slice(offset, offset + size)
 
+  const handleRowClick = (log: LogEntry) => () => {
+    setDetail(log)
+  }
+
   return (
     <>
       <TableContainer
@@ -110,7 +104,12 @@ const LogsList = () => {
             ) : (
               <>
                 {displayLogs.map(log => (
-                  <TableRow key={log.id} hover sx={{ cursor: 'pointer' }}>
+                  <TableRow
+                    key={log.id}
+                    hover
+                    sx={{ cursor: 'pointer' }}
+                    onClick={handleRowClick(log)}
+                  >
                     <TableCell width={185}>
                       {dayjs(log.timestamp).format('YYYY-MM-DD hh:mm:ss A')}
                     </TableCell>
